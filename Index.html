@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Birthday!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0 20px;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      text-align: center;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-top: 50px;
+      animation: bounce 1s infinite alternate;
+    }
+
+    @keyframes bounce {
+      to {
+        transform: translateY(-10px);
+      }
+    }
+
+    p {
+      font-size: 1.5rem;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+
+    .cake {
+      display: block;
+      margin: 0 auto 20px; /* center + spacing below */
+      width: 200px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.6);
+    }
+
+    .btn {
+      margin-top: 10px;
+      padding: 15px 30px;
+      font-size: 1rem;
+      background-color: #ff6f91;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 15px #ff6f91;
+    }
+
+    .btn:hover {
+      background-color: #ff4e7a;
+      box-shadow: 0 0 25px #ff4e7a;
+    }
+
+    #surprise {
+      display: none;
+      margin: 40px auto;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+
+  <h1>🎉 Happy Birthday, Sis! 🎉</h1>
+  <p>You light up the world like nobody else. Hope your day is full of smiles, cake, and love! 💖</p>
+
+  <img class="cake" src="https://i.imgur.com/OZaT7jl.png" alt="Birthday Cake" />
+
+  <button class="btn" onclick="showSurprise()">Click for a Surprise 🎁</button>
+
+  <div id="surprise">
+    <p>💌 You are loved more than words can say!</p>
+    <img src="https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif" alt="Cute Surprise" style="width:200px;" />
+  </div>
+
+  <audio id="bdaySong">
+    <source src="https://www.fesliyanstudios.com/play-mp3/387" type="audio/mpeg" />
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    function showSurprise() {
+      document.getElementById("surprise").style.display = "block";
+      const music = document.getElementById("bdaySong");
+      music.play();
+    }
+
+    // Confetti setup
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let pieces = [];
+    for (let i = 0; i < 150; i++) {
+      pieces.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 5 + 2,
+        color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+        speed: Math.random() + 1,
+        drift: Math.random() * 2 - 1
+      });
+    }
+
+    function update() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let p of pieces) {
+        p.y += p.speed;
+        p.x += p.drift;
+        if (p.y > canvas.height) p.y = 0;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.x < 0) p.x = canvas.width;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, 2 * Math.PI);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+      }
+      requestAnimationFrame(update);
+    }
+
+    update();
+  </script>
+</body>
+</html>
